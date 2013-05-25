@@ -1,0 +1,95 @@
+# Colors from http://wiki.archlinux.org/index.php/Color_Bash_Prompt
+# misc
+NO_COLOR='\e[0m' #disable any colors
+# regular colors
+BLACK='\e[0;30m'
+RED='\e[0;31m'
+GREEN='\e[0;32m'
+YELLOW='\e[0;33m'
+BLUE='\e[0;34m'
+MAGENTA='\e[0;35m'
+CYAN='\e[0;36m'
+WHITE='\e[0;37m'
+# emphasized (bolded) colors
+EBLACK='\e[1;30m'
+ERED='\e[1;31m'
+EGREEN='\e[1;32m'
+EYELLOW='\e[1;33m'
+EBLUE='\e[1;34m'
+EMAGENTA='\e[1;35m'
+ECYAN='\e[1;36m'
+EWHITE='\e[1;37m'
+# underlined colors
+UBLACK='\e[4;30m'
+URED='\e[4;31m'
+UGREEN='\e[4;32m'
+UYELLOW='\e[4;33m'
+UBLUE='\e[4;34m'
+UMAGENTA='\e[4;35m'
+UCYAN='\e[4;36m'
+UWHITE='\e[4;37m'
+# background colors
+BBLACK='\e[40m'
+BRED='\e[41m'
+BGREEN='\e[42m'
+BYELLOW='\e[43m'
+BBLUE='\e[44m'
+BMAGENTA='\e[45m'
+BCYAN='\e[46m'
+BWHITE='\e[47m'
+
+
+function detect_rvm_version {
+  local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
+  [ "$gemset" != "" ] && gemset="@$gemset"
+  local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
+  [ "$version" != "" ] && version="$version"
+  local full="$version$gemset"
+  [ "$full" != "" ] && echo "$full"
+}
+
+function detect_git_dirty {
+  local git_status=$(git status 2>&1 | tail -n1)
+  [[ $git_status != "fatal: Not a git repository (or any of the parent directories): .git" ]] && [[ $git_status != "nothing to commit (working directory clean)" ]] && echo " *"
+}
+
+function detect_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/\1/"
+}
+
+function dev_info {
+  echo "[$(detect_rvm_version) $(detect_git_branch) $(detect_git_dirty)]"
+}
+
+function ruby_info {
+  echo "[$(detect_rvm_version)]"
+}
+
+function git_info {
+  echo "[$(detect_git_branch)$(detect_git_dirty)]"
+}
+
+
+# Custom command prompt:
+#PS1="\[$EGREEN\]\u@\h\[$EBLUE\]:\w\[$RED\] [\$(ruby -v | cut -c6-10)]\[$WHITE\] \$(vcprompt)\[$NO_COLOR\]\n\$ "
+PS1="\[$EGREEN\]\u@\h\[$EBLUE\]:\w\[$RED\] \$(ruby_info)\[$WHITE\] \$(git_info)\[$NO_COLOR\]\n\$ "
+
+
+# case "$TERM" in
+# xterm*|rxvt*)
+#     PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
+#     ;;
+# *)
+#     ;;
+# esac
+
+# case "$TERM" in
+# xterm-color)
+#     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+#     ;;
+# *)
+#     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+#     ;;
+# esac
+
+

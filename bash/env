@@ -1,0 +1,55 @@
+# don't put duplicate lines in the history. 
+export HISTCONTROL=ignoredups
+
+# check the window size after each command and, if 
+# necessary, update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files
+[ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# enable programmable completion features 
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+export VIM_APP_DIR="/Applications"
+
+if [ -d ~/bin ]; then
+	PATH=~/bin:"${PATH}"
+fi
+
+export PATH="/usr/local/bin:/usr/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/mysql/bin:$PATH"
+export PATH="$PATH:~/bin/ec2-api-tools-1.4.3.0/bin"
+# for java/tomcat:
+export PATH="$PATH:/usr/local/Cellar/tomcat/6.0.26/bin"
+export PATH="$PATH:/usr/local/smlnj-110.75/bin"
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+
+# GREENLINE AWS ACCOUNT CREDENTIALS:
+# export EC2_PRIVATE_KEY=~/.ec2/pk-NZILCIPCOZT7GMUXW443UA66SC2BDYAX.pem
+# export EC2_CERT=~/.ec2/cert-NZILCIPCOZT7GMUXW443UA66SC2BDYAX.pem
+
+# STI AWS ACCOUNT CREDENTIALS:
+export EC2_PRIVATE_KEY=~/.ec2/pk-MGFJN2A5YO6CUTN7IGQAHQ7ILK3QTDHQ.pem
+export EC2_CERT=~/.ec2/cert-MGFJN2A5YO6CUTN7IGQAHQ7ILK3QTDHQ.pem
+export EC2_HOME=~/bin/ec2-api-tools-1.4.3.0
+export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Home/"
+export MANPATH=/usr/local/man:$MANPATH
+
+
+set -o vi
+set editing-mode vi
+
+export PGDATA=/usr/local/var/postgres
+
+#[[ -s "/Users/brian/.rvm/scripts/rvm" ]] && source "/Users/brian/.rvm/scripts/rvm"  # This loads RVM into a shell session.
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
